@@ -22,6 +22,15 @@ export const GLASSES_STYLES = [
     yOffset: -0.25, // Groucho piece hangs lower (nose + moustache below eyes)
     zOffset: 0.0,
   },
+  {
+    id: 'round_rim',
+    label: 'Round',
+    swatchColor: '#c8a84b',
+    model: '/models/round_rim.glb',
+    scale:   1.0,   // ← tune if too small/large
+    yOffset: 0.0,
+    zOffset: 0.0,
+  },
 ]
 
 // ── Renderer ──────────────────────────────────────────────────────────────────
