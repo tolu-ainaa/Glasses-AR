@@ -27,7 +27,7 @@ export const GLASSES_STYLES = [
     label: 'Round',
     swatchColor: '#c8a84b',
     model: '/models/round_rim.glb',
-    scale:   1.0,   // ← tune if too small/large
+    scale:   2.3,   // ← tune if too small/large
     yOffset: 0.0,
     zOffset: 0.0,
   },
