@@ -1,6 +1,6 @@
 import { useRef, useEffect, useCallback, useState } from 'react'
 import { useMediaPipe } from '../hooks/useMediaPipe'
-import { GlassesRenderer } from '../utils/GlassesRenderer'
+import { GlassesRenderer, GLASSES_STYLES } from '../utils/GlassesRenderer'
 import Controls from './Controls'
 import GlassesPicker from './GlassesPicker'
 
@@ -13,8 +13,9 @@ export default function ARCamera({ onCapture, latestCapture, onOpenGallery }) {
 
   // Keep a ref in sync with state so the renderer useEffect can read it
   // without adding styleId to its dependency array (which would rebuild the renderer)
-  const [styleId, setStyleId]   = useState('classic')
-  const styleIdRef = useRef('classic')
+  const [styleId, setStyleId]   = useState(GLASSES_STYLES[0].id)
+  const styleIdRef = useRef(GLASSES_STYLES[0].id)
+  const [thumbnails, setThumbnails] = useState(null)
 
   const [cameraError, setCameraError]   = useState(null)
   const [isReady, setIsReady]           = useState(false)
@@ -82,7 +83,7 @@ export default function ARCamera({ onCapture, latestCapture, onOpenGallery }) {
     const canvas = overlayRef.current
     const video  = videoRef.current
 
-    rendererRef.current = new GlassesRenderer(canvas)
+    rendererRef.current = new GlassesRenderer(canvas, { onThumbnails: setThumbnails })
     // Apply whichever style is active at mount time
     rendererRef.current.setStyle(styleIdRef.current)
 
@@ -128,7 +129,7 @@ export default function ARCamera({ onCapture, latestCapture, onOpenGallery }) {
       const cW = canvas.clientWidth
       const cH = canvas.clientHeight
 
-      renderer.update(landmarks, video.videoWidth, video.videoHeight, cW, cH)
+      renderer.update(landmarks, video.videoWidth, video.videoHeight, cW, cH, time)
 
       // Composite to recording canvas if active
       const rec = recordingRef.current
@@ -246,7 +247,7 @@ export default function ARCamera({ onCapture, latestCapture, onOpenGallery }) {
         </div>
       )}
 
-      <GlassesPicker current={styleId} onChange={handleStyleChange} />
+      <GlassesPicker current={styleId} onChange={handleStyleChange} thumbnails={thumbnails} />
 
       <Controls
         onPhoto={capturePhoto}
